@@ -1,0 +1,18 @@
+##helpers and sensors:
+### virtual switches:
+	sunscreen_manual
+	sunscreen_conditions_down
+	sunscreen_last_execution_time
+### real & internet sensors
+  nest thermostaat for inside temperature.
+  buienradar for weather devices.
+### helpers
+	sunscreen_conditions_down 		input_boolean.sunscreen_conditions_down 	Schakelaar
+	sunscreen_manual         		input_boolean.sunscreen_set_manual       	Schakelaar
+	sunscreen_set_begintijd  		input_datetime.sunscreen_set_begintijd   	Datum en/of tijd	        sunscreen_set_eindtijd	input_datetime.sunscreen_set_eindtijd
+	sunscreen_set_begintijd  		input_datetime.sunscreen_set_eindtijd   	Datum en/of tijd        
+	sunscreen_set_min_inside_tem	input_number.sunscreen_set_min_inside_temp	Numeriek
+	sunscreen_set_min_outside_temp	input_number.sunscreen_set_min_outside_temp	Numeriek	
+	sunscreen_set_regen	            input_number.sunscreen_set_regen	        Numeriek
+	sunscreen_set_windsnelheid	    input_number.sunscreen_set_windsnelheid	    Numeriek
+	sunscreen_set_irradiance  		input_number.sunscreen_set_irradiance
