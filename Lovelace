@@ -1,3 +1,26 @@
 One card to SET therhold values and to check fast what the state of all conditions are.
 <image src="https://github.com/remb0/Sunscreen/blob/main/screenshots/lovelace%20conditions.png?raw=true"></image>
 <image src="https://github.com/remb0/Sunscreen/blob/main/screenshots/set%20lovelace.png?raw=true"></image>
+
+I placed a simple enitity card with all the entities:
+type: entities
+entities:
+  - entity: input_boolean.sunscreen_set_manual
+  - entity: sensor.sunscreen_blokkering_button_display
+  - entity: sensor.sunscreen_last_execution_time
+  - entity: sensor.sunscreen_max_rain_next_hour
+  - entity: sensor.sunscreen_max_wind_gust
+  - entity: sensor.sunscreen_min_inside_temp
+  - entity: sensor.sunscreen_min_outdoor_temp
+  - entity: sensor.sunscreen_months_for_execution
+  - entity: sensor.sunscreen_time_frame_for_execution
+  - entity: sensor.sunscreen_irradiance
+  - entity: input_boolean.sunscreen_conditions_down
+  - entity: input_datetime.sunscreen_set_begintijd
+  - entity: input_datetime.sunscreen_set_eindtijd
+  - entity: input_number.sunscreen_set_min_inside_temp
+  - entity: input_number.sunscreen_set_min_outside_temp
+  - entity: input_number.sunscreen_set_regen
+  - entity: input_number.sunscreen_set_windsnelheid
+  - entity: input_number.sunscreen_set_irradiance
+  - entity: sun.sun

@@ -1,3 +1,6 @@
+Check the automation folder for the automations yaml files you can copy paste.
+
+
 ##1 sunscreen_bepaling
 Checks every minute the conditions of sunscreen (if actual conditions met the SET values of the helpers), when al conditions met the helper: sunscreen_conditions_down will be true.
 can be used whitout modifications, because all logic is in sunscreen.yaml
