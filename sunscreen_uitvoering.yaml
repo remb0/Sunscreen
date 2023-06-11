@@ -1,0 +1,41 @@
+alias: Sunscreen_uitvoering
+description: ""
+trigger:
+  - platform: state
+    entity_id: input_boolean.sunscreen_conditions_down
+    id: sunscreen_up
+    from: "on"
+    to: "off"
+  - platform: state
+    entity_id: input_boolean.sunscreen_conditions_down
+    id: sunscreen_down
+    from: "off"
+    to: "on"
+condition:
+  - condition: state
+    entity_id: input_boolean.sunscreen_set_manual
+    state: "off"
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: sunscreen_up
+        sequence:
+          - service: notify.mobile_app_mi13
+            data:
+              message: sunscreen_up
+              title: sunscreen_up
+      - conditions:
+          - condition: trigger
+            id: sunscreen_down
+        sequence:
+          - service: notify.mobile_app_mi13
+            data:
+              message: sunscreen down
+              title: sunscreen down
+    default:
+      - service: notify.mobile_app_mi13
+        data:
+          message: sunscreen doet niets
+          title: sunscreen doet niets
+mode: single

@@ -13,8 +13,11 @@ as extra notifications would send and all helpers and actual data is also stored
 
 ## This repo:
 #### helpers and sensors
+
 #### 3 automations
+
 #### lovelace card(s)
+
 
 
 # Link to other projects:

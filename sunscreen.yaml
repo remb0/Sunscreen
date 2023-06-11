@@ -1,0 +1,129 @@
+  ###################################################################################
+##   @author         :   Remb0 
+#   @last update    :   11/05/2023
+#   @package        :   sunscreen
+#   @description    :   Template sensor for sunscreen conditions states
+###################################################################################
+# Sunscreen
+################################################################################### 
+sensor:
+  - platform: template
+    sensors:
+      sunscreen_blokkering_button_display:       
+        value_template: >-
+          {% if is_state('input_boolean.sunscreen_set_manual', 'off') %} True
+          {% else %} False
+          {% endif %}
+        icon_template: >-
+          {% if is_state('input_boolean.sunscreen_set_manual', 'off') %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+  ## wat is het verschil tussen windgust en speed?  
+  ## todo:  wind force is ook te gebruiken
+      sunscreen_max_wind_gust:
+      # Wind strenght - in km/h  (equeal as windkracht 7)    
+        value_template: >-
+          {% if states('sensor.buienradar_wind_speed') |  float(0)  < 60 %} True
+          {% else %} False
+          {% endif %}
+        icon_template: >-
+          {% if states('sensor.buienradar_wind_speed') |  float(0) < 60 %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+  #sensor.buienradar_irradiance  ## Sun should be above the horizon, not below
+      sunscreen_irradiance:
+      # buienradar_irradiance   
+        value_template: >-
+          {% if states('sensor.buienradar_irradiance') |  int(0) > states('input_number.sunscreen_set_irradiance')|int %} True
+          {% else %} False
+          {% endif %}
+        icon_template: >-
+          {% if states('sensor.buienradar_irradiance') |  float(0) > states('input_number.sunscreen_set_irradiance')|int %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+      sunscreen_max_rain_next_hour:
+      # Almost no rain in the next 60 minutes is predicted      
+        value_template: >-
+          {% if states('sensor.buienradar_precipitation_forecast_total') |  float(0) < 0.01  %} True
+          {% else %} False
+          {% endif %}
+        icon_template: >-
+          {% if states('sensor.buienradar_precipitation_forecast_total') |  float(0) < 0.01  %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}        
+      sunscreen_min_outdoor_temp:
+      # Above the 19 degrees outsite temperature 
+        value_template: >-
+          {% if states('sensor.buienradar_temperature') |  float(0)> states('input_number.sunscreen_set_min_outside_temp')| float %} True
+          {% else %} False
+          {% endif %}
+        icon_template: >-
+          {% if states('sensor.buienradar_temperature') | float(0) > states('input_number.sunscreen_set_min_outside_temp')| float %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}   
+      sunscreen_min_inside_temp:
+      # Above the 20 degrees in Living room.    
+        value_template: >-
+          {% if states('sensor.woonkamer_temperature') | float(0) >  states('input_number.sunscreen_set_min_inside_temp') | float %} True
+          {% else %} False
+          {% endif %}
+        #entity_id:
+        #- sensor.woonkamer_temperature
+        icon_template: >-
+          {% if states('sensor.woonkamer_temperature') | float(0) >  states('input_number.sunscreen_set_min_inside_temp')| float %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+      sunscreen_time_frame_for_execution:       
+        value_template: >-
+          {% if now() > today_at(states('input_datetime.sunscreen_set_begintijd')) and now() < today_at(states('input_datetime.sunscreen_set_eindtijd'))%} True
+          {% else %} False
+          {% endif %}
+        #entity_id:
+        #- sensor.time         
+        icon_template: >-
+          {% if now() > today_at(states('input_datetime.sunscreen_set_begintijd')) and now() < today_at(states('input_datetime.sunscreen_set_eindtijd'))%}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+      sunscreen_months_for_execution:
+      # Starting in Maart dus groter dan 2 (feb) en ending in oktober dus kleiner dan 10    
+        value_template: >-
+          {% if (now().month >= 3) and (now().month <= 9) %} True
+          {% else %} False
+          {% endif %}
+        #entity_id:
+        #- sensor.date           
+        icon_template: >-
+          {% if (now().month >= 3) and (now().month <= 9) %} 
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+      sunscreen_last_execution_time:
+      # prevents that automation is triggered multiple times in a short amount of time. Checks last time automation is triggered, if more then 2700 seconds (45min), condition becomes True    
+        value_template: >-
+          {% if ( as_timestamp(now()) - as_timestamp(states.input_boolean.sunscreen_conditions_down.last_changed) |int(0) ) > 2700 %} True
+          {% else %} False
+          {% endif %}
+        #entity_id:
+        #- sensor.time 
+        icon_template: >-
+          {% if ( as_timestamp(now()) - as_timestamp(states.input_boolean.sunscreen_conditions_down.last_changed) |int(0) ) > 2700 %}
+            mdi:check-outline
+          {% else %}
+            mdi:alert-outline
+          {% endif %}
+          

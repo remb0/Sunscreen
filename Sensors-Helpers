@@ -1,3 +1,7 @@
+The helpers are virtual input devices to set thresholds.
+The conditions can be checked in the automation but because we can to check them also on a lovelace dashboard I made some teplate sensors also in sunscreen.yaml.
+
+
 ##helpers and sensors:
 ### virtual switches:
 	sunscreen_manual
@@ -16,3 +20,12 @@
 	sunscreen_set_regen	            input_number.sunscreen_set_regen	        Numeriek
 	sunscreen_set_windsnelheid	    input_number.sunscreen_set_windsnelheid	    Numeriek
 	sunscreen_set_irradiance  		input_number.sunscreen_set_irradiance
+
+
+Helpers can be created in the interface:
+<screenshot placeholder>
+
+
+sunscreen.yaml
+this file create template sensors(true of false) with a icon (warning sign or a check) when conditions are met or not.
+this template sensors would also be used  in the automations (and would be (and simplify) the automation)
