@@ -9,8 +9,8 @@ All threshold values can be giving in a lovelace card and stored in input helper
 Every minute a automation checks if actual weather values met the given conditions and awkning would be controlled.
 as extra notifications would send and all helpers and actual data is also stored on google sheets to debug, dry run methode to improve values.
 
-this repo contains:
-helpers and sensors
-3 automations
-lovelace card(s)
+## This repo contains:
+### helpers and sensors
+### 3 automations
+### lovelace card(s)
 
