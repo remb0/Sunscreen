@@ -13,10 +13,13 @@ as extra notifications would send and all helpers and actual data is also stored
 
 ## This repo:
 #### helpers and sensors
+https://github.com/remb0/Sunscreen/blob/main/Sensors-Helpers
 
 #### 3 automations
+https://github.com/remb0/Sunscreen/blob/main/automation.yaml
 
 #### lovelace card(s)
+https://github.com/remb0/Sunscreen/blob/main/lovelace
 
 
 
