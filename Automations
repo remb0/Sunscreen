@@ -1,15 +1,12 @@
 Check the automation folder for the automations yaml files you can copy paste.
 
 
-##1 sunscreen_bepaling
+##1 sunscreen
 Checks every minute the conditions of sunscreen (if actual conditions met the SET values of the helpers), when al conditions met the helper: sunscreen_conditions_down will be true.
 can be used whitout modifications, because all logic is in sunscreen.yaml
-
-##2 sunscreen_google_sheets
-Sends every minute all helpers set values and the actual sensor data to a google sheet to debug.
-!! optional!!
-
-##3 sunscreen_uitvoering
-Respond only on the helper: sunscreen_conditions_down
 This automation, sends a notification to telephone and controls the awkning.
 !! replace notification device or methode by your own !!
+
+it include a former separate script: sunscreen_google_sheets
+Sends every minute all helpers set values and the actual sensor data to a google sheet to debug.
+!! optional!!
