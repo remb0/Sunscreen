@@ -1,0 +1,177 @@
+alias: sunscreen
+description: check to see if sunscreen may and/or needs to to be opened or closeds
+trigger:
+  - platform: state
+    entity_id:
+      - binary_sensor.sunscreen_valid_wind
+      - binary_sensor.sunscreen_valid_rain
+    id: sunscreen_action_critical
+    from: "on"
+    to: "off"
+  - platform: state
+    entity_id:
+      - binary_sensor.sunscreen_valid_wind
+      - binary_sensor.sunscreen_valid_rain
+    id: sunscreen_action_normal
+    from: "off"
+    to: "on"
+  - platform: state
+    entity_id:
+      - binary_sensor.sunscreen_valid_azimuth
+      - binary_sensor.sunscreen_valid_elevation
+      - binary_sensor.sunscreen_valid_irradiance
+      - binary_sensor.sunscreen_valid_months_for_execution
+    id: sunscreen_action_normal
+  - platform: state
+    entity_id:
+      - timer.sunscreen_delay
+    id: sunscreen_action_delayed
+    from: active
+    to: idle
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.sunscreen_valid_months_for_execution
+                state: "on"
+              - condition: state
+                entity_id: binary_sensor.sunscreen_valid_elevation
+                state: "on"
+              - condition: state
+                entity_id: binary_sensor.sunscreen_valid_azimuth
+                state: "on"
+              - condition: state
+                entity_id: binary_sensor.sunscreen_valid_irradiance
+                state: "on"
+              - condition: state
+                entity_id: binary_sensor.sunscreen_valid_wind
+                state: "on"
+              - condition: state
+                entity_id: binary_sensor.sunscreen_valid_rain
+                state: "on"
+        sequence:
+          - service: input_boolean.turn_on
+            data: {}
+            target:
+              entity_id:
+                - input_boolean.sunscreen_conditions_request
+    default:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id:
+            - input_boolean.sunscreen_conditions_request
+  - if:
+      - condition: template
+        value_template: >-
+          {{ states('input_boolean.sunscreen_conditions') ==
+          states('input_boolean.sunscreen_conditions_request') }}
+    then:
+      - stop: condities niet gelijk!
+    else: []
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: sunscreen_action_critical
+        sequence: []
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: trigger
+                id: sunscreen_action_normal
+              - condition: state
+                entity_id: timer.sunscreen_delay
+                state: idle
+              - condition: state
+                entity_id: input_boolean.sunscreen_set_manual
+                state: "off"
+        sequence: []
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: trigger
+                id: sunscreen_action_delayed
+              - condition: state
+                entity_id: input_boolean.sunscreen_set_manual
+                state: "off"
+        sequence: []
+    default:
+      - stop: Not defined
+        error: false
+  - if:
+      - condition: state
+        entity_id: input_boolean.sunscreen_conditions_request
+        state: "on"
+    then:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id:
+            - input_boolean.sunscreen_fake
+            - input_boolean.sunscreen_conditions
+      - service: cover.open_cover
+        data: {}
+        target:
+          entity_id: cover.sunscreen
+      - if:
+          - condition: state
+            entity_id: input_boolean.sunscreen_notifications
+            state: "on"
+        then:
+          - service: notify.mobile_app_mi13
+            data:
+              title: sunscreen buiten open naar beneden
+              message: sunscreen buiten open naar beneden
+    else:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id:
+            - input_boolean.sunscreen_conditions
+            - input_boolean.sunscreen_fake
+      - service: cover.close_cover
+        data: {}
+        target:
+          entity_id: cover.sunscreen
+      - if:
+          - condition: state
+            entity_id: input_boolean.sunscreen_notifications
+            state: "on"
+        then:
+          - service: notify.mobile_app_mi13
+            data:
+              title: sunscreen naar binnen
+              message: sunscreen naar binnen
+  - service: google_sheets.append_sheet
+    data:
+      config_entry: c2f8b2b921c84706b75f3b2d1bbf97ad
+      data:
+        Date: "{{ now().strftime('%-d-%b-%y') }}"
+        Smanual: "{{ states('input_boolean.sunscreen_set_manual') }}"
+        rain_next_hour: "{{ states('sensor.buienradar_precipitation_forecast_total') }}"
+        Srain_next_hour: "{{ states('input_number.sunscreen_set_regen') }}"
+        sunscreen_valid_rain: "{{ states('binary_sensor.sunscreen_valid_rain') }}"
+        wind_gust: "{{ states('sensor.buienradar_wind_speed')}}"
+        Swind_gust: "{{ states('input_number.sunscreen_set_windsnelheid')}}"
+        sunscreen_valid_wind: "{{ states('binary_sensor.sunscreen_valid_wind') }}"
+        Temp_Min_inside: "{{ states('sensor.woonkamer_temperature') }}"
+        STemp_Min_inside: "{{ states('input_number.sunscreen_set_min_inside_temp') }}"
+        sunscreen_min_inside_temp: "{{ states('binary_sensor.sunscreen_min_inside_temp') }}"
+        Temp_min_outside: "{{ states('sensor.buienradar_temperature') }}"
+        STemp_min_outside: "{{ states('input_number.sunscreen_set_min_outside_temp') }}"
+        sunscreen_min_outdoor_temp: "{{ states('binary_sensor.sunscreen_min_outdoor_temp') }}"
+        irradiance: "{{ states('sensor.buienradar_irradiance') }}"
+        Sirradiance: "{{ states('input_number.sunscreen_set_irradiance') }}"
+        sunscreen_valid_irradiance: "{{ states('binary_sensor.sunscreen_valid_irradiance') }}"
+        azimuth: "{{ states('sensor.sun_solar_azimuth') }}"
+        Sazimuth: "{{ states('input_number.sunscreen_valid_azimuth') }}"
+        sunscreen_valid_azimuth: "{{ states('binary_sensor.sunscreen_valid_azimuth') }}"
+        elevation: "{{ states('sensor.sun_solar_elevation') }}"
+        Selevation: "{{ states('input_number.sunscreen_valid_elevation') }}"
+        sunscreen_valid_elevation: "{{ states('binary_sensor.sunscreen_valid_elevation') }}"
+        sunscreen_state: "{{ states('cover.sunscreen') }}"
+        sunscreen_delayed: "{{ states('timer.sunscreen_delay') }}"
+mode: single
