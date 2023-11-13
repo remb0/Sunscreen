@@ -15,7 +15,7 @@ as extra notifications would send and all helpers and actual data is also stored
 #### helpers and sensors
 https://github.com/remb0/Sunscreen/blob/main/Sensors-Helpers
 
-#### 3 automations
+#### 1 automation
 https://github.com/remb0/Sunscreen/blob/main/automation.yaml
 
 #### lovelace card(s)
@@ -28,7 +28,6 @@ ESPSomfy-RTS <image src="https://user-images.githubusercontent.com/47839015/2188
 https://github.com/rstrouse/ESPSomfy-RTS
 
 # Whishes / ToDo:
-- combine the 3 automations.
 - dry run with actionable notifications on telephone
 - notifications on telephone why the screen is moving (screen is going up because of exspected rain)
 - smaller lovelace design
