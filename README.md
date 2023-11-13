@@ -28,6 +28,8 @@ ESPSomfy-RTS <image src="https://user-images.githubusercontent.com/47839015/2188
 https://github.com/rstrouse/ESPSomfy-RTS
 
 # Whishes / ToDo:
-- dry run with actionable notifications on telephone
+- dry run (fake) with actionable notifications on telephone
+- translate all helpers to englisch
+- manual overide option
 - notifications on telephone why the screen is moving (screen is going up because of exspected rain)
 - smaller lovelace design
